@@ -30,6 +30,8 @@ dependencies {
 	testImplementation("org.springframework.graphql:spring-graphql-test")
 	implementation("org.xerial:sqlite-jdbc:3.40.0.0")
 	implementation("org.hibernate.orm:hibernate-community-dialects:6.1.6.Final")
+	implementation("com.github.ksuid:ksuid:1.1.1")
+	implementation("com.google.code.gson:gson:2.8.5")
 }
 
 tasks.withType<KotlinCompile> {
