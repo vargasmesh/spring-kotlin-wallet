@@ -32,6 +32,7 @@ dependencies {
 	implementation("org.hibernate.orm:hibernate-community-dialects:6.1.6.Final")
 	implementation("com.github.ksuid:ksuid:1.1.1")
 	implementation("com.google.code.gson:gson:2.8.5")
+	implementation("org.javamoney:moneta:1.1")
 }
 
 tasks.withType<KotlinCompile> {
