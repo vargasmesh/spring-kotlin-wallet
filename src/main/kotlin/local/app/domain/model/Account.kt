@@ -10,7 +10,7 @@ data class AccountSummaryEvent(val accountID: AccountID, val owner: String, val 
 
 data class CreateAccountEvent(val requestID: String, val owner: String)
 
-enum class AccountEvents {
+enum class AccountEventTypes {
     ACCOUNT_CREATED,
     ACCOUNT_SUMMARY
 }
