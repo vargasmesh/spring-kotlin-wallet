@@ -6,6 +6,7 @@ typealias AccountID = String
 
 data class Account(val id: AccountID, val balance: FastMoney, val owner: String)
 
+data class AccountSummaryEvent(val accountID: AccountID, val owner: String, val balance: FastMoney)
 
 data class CreateAccountEvent(val requestID: String, val owner: String)
 
