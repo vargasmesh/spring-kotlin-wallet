@@ -1,6 +1,6 @@
 package local.app.adapter.graphql
 
-import local.app.application.command.AccountService
+import local.app.application.command.AccountCommands
 import local.app.domain.model.AccountID
 import local.app.domain.model.CreateAccountEvent
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller
 @Controller
 class AccountResolver(
     @Autowired
-    val accountService: AccountService
+    val accountCommands: AccountCommands
 ) {
     @QueryMapping
     fun hello(): String {
@@ -23,6 +23,6 @@ class AccountResolver(
 
     @MutationMapping
     fun createAccount (@ContextValue requestID: String, @Argument owner: String): AccountID {
-        return accountService.createAccount(CreateAccountEvent(requestID, owner))
+        return accountCommands.createAccount(CreateAccountEvent(requestID, owner))
     }
 }

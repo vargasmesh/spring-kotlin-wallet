@@ -10,7 +10,7 @@ interface AccountRepository {
 }
 
 @Service
-class AccountService(
+class AccountCommands(
     private val accountRepository: AccountRepository
 ) {
 
