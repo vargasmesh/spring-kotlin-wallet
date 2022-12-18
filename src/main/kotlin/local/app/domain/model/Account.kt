@@ -20,5 +20,6 @@ data class CreditAccountEvent(val accountID: AccountID, val amount: FastMoney)
 
 enum class AccountEventTypes {
     ACCOUNT_CREATED,
-    ACCOUNT_SUMMARY
+    ACCOUNT_SUMMARY,
+    ACCOUNT_CREDITED,
 }

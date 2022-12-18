@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 data class AccountCreatedEvent(val request_id: String, val owner: String)
+data class AccountCreditedEvent(val request_id: String, val amount: String)
 data class AccountSummaryEvent(val owner: String, val balance: String)
 
 
@@ -46,5 +47,19 @@ class AccountRepositoryImpl(
 
 
         return accountID
+    }
+
+    override fun addToBalance(event: CreditAccountEvent) {
+        val gson = Gson()
+
+        val requestID = getRequestIDFromContext()
+
+        val creditedEvent = Event(
+            type = AccountEventTypes.ACCOUNT_CREDITED.name,
+            entity_id = event.accountID,
+            data = gson.toJson(AccountCreditedEvent(requestID, event.amount.toString())),
+        )
+
+        entityManager.persist(creditedEvent)
     }
 }
