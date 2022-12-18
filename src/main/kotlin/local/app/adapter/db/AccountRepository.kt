@@ -12,6 +12,7 @@ import java.util.UUID
 
 data class AccountCreatedEventData(val request_id: String, val owner: String)
 data class AccountCreditedEventData(val request_id: String, val amount: String)
+data class AccountDebitedEventData(val request_id: String, val amount: String)
 data class AccountSummaryEventData(val owner: String, val balance: String)
 
 
@@ -65,6 +66,20 @@ class AccountRepositoryImpl(
         entityManager.persist(creditedEvent)
     }
 
+    override fun debitAccount(event: DebitAccountEvent) {
+        val gson = Gson()
+
+        val requestID = getRequestIDFromContext()
+
+        val creditedEvent = Event(
+            type = AccountEventTypes.ACCOUNT_DEBITED.name,
+            entity_id = event.account.id,
+            data = gson.toJson(AccountDebitedEventData(requestID, event.amount.number.toString())),
+        )
+
+        entityManager.persist(creditedEvent)
+    }
+
     override fun getAccountEvents(accountID: AccountID): List<AccountEvent> {
         val account = entityManager.find(Account::class.java, accountID)
         val gson = Gson()
@@ -86,6 +101,13 @@ class AccountRepositoryImpl(
                     AccountEventTypes.ACCOUNT_CREDITED.name -> {
                         val data=gson.fromJson(it.data, AccountCreditedEventData::class.java)
                         AccountCreditEvent(
+                            account.id,
+                            FastMoney.of(data.amount.toDouble(), currency)
+                        )
+                    }
+                    AccountEventTypes.ACCOUNT_DEBITED.name -> {
+                        val data=gson.fromJson(it.data, AccountDebitedEventData::class.java)
+                        AccountDebitEvent(
                             account.id,
                             FastMoney.of(data.amount.toDouble(), currency)
                         )

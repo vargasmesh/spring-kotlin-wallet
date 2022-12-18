@@ -18,6 +18,13 @@ class StateMachine {
                         balance =  account.balance.add(event.amount)
                     )
                 }
+                is AccountDebitEvent -> {
+                    Account(
+                        id = account.id,
+                        owner = account.owner,
+                        balance =  account.balance.subtract(event.amount)
+                    )
+                }
                 else -> account
             }
         }

@@ -25,6 +25,13 @@ class AccountResolver(
     }
 
     @MutationMapping
+    fun debitAccount(@Argument accountID: String, @Argument amount: String): Account {
+        val account = accountQueries.getAccount(accountID)
+        accountCommands.debitAccount(DebitAccountEvent(account, FastMoney.of(amount.toDouble(), currency) ))
+        return accountQueries.getAccount(accountID)
+    }
+
+    @MutationMapping
     fun createAccount (@Argument owner: String): AccountID {
         return accountCommands.createAccount(CreateAccountEvent(owner))
     }
