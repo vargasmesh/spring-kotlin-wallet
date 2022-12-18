@@ -3,7 +3,6 @@ package local.app.adapter.graphql
 import local.app.application.command.AccountCommands
 import local.app.application.query.AccountQueries
 import local.app.domain.model.*
-import local.app.pkg.getRequestIDFromContext
 import org.javamoney.moneta.FastMoney
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.graphql.data.method.annotation.Argument
@@ -37,7 +36,7 @@ class AccountResolver(
     }
 
     @MutationMapping
-    fun creditAccount(@Argument accountID: String, @Argument amount: String): String {
+    fun creditAccount(@Argument accountID: String, @Argument amount: String): Account {
         accountCommands.creditAccount(
             CreditAccountEvent(
                 accountID,
@@ -45,6 +44,6 @@ class AccountResolver(
             )
         )
 
-        return getRequestIDFromContext()
+        return accountQueries.getAccount(accountID)
     }
 }
