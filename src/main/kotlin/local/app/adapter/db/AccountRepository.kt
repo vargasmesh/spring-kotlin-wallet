@@ -86,8 +86,9 @@ class AccountRepositoryImpl(
         val gson = Gson()
 
         return entityManager
-            .createQuery("FROM Event e WHERE e.id >= :id", Event::class.java)
+            .createQuery("FROM Event e WHERE e.id >= :id AND e.entity_id = :entity_id", Event::class.java)
             .setParameter("id", account.last_summary_event.id)
+            .setParameter("entity_id", account.id)
             .resultList
             .mapNotNull {
                 when(it.type) {
