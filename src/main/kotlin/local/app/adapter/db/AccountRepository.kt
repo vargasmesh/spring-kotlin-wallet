@@ -57,7 +57,7 @@ class AccountRepositoryImpl(
         val creditedEvent = Event(
             type = AccountEventTypes.ACCOUNT_CREDITED.name,
             entity_id = event.accountID,
-            data = gson.toJson(AccountCreditedEvent(requestID, event.amount.toString())),
+            data = gson.toJson(AccountCreditedEvent(requestID, event.amount.number.toString())),
         )
 
         entityManager.persist(creditedEvent)

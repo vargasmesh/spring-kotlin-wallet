@@ -20,4 +20,9 @@ class AccountCommands(
     fun createAccount(event: CreateAccountEvent): AccountID {
         return accountRepository.createAccount(event)
     }
+
+    @Transactional
+    fun creditAccount(event: CreditAccountEvent) {
+        accountRepository.addToBalance(event)
+    }
 }
