@@ -9,7 +9,7 @@ type Query {
 }
 
 type Mutation {
-    createAccount(owner: String!): String!
-    creditAccount(accountID: String!, amount: String!): Account!
-    debitAccount(accountID: String!, amount: String!): Account!
+    createAccount(owner: String!): String
+    creditAccount(accountID: String!, amount: String!): Account
+    debitAccount(accountID: String!, amount: String!): Account
 }
