@@ -6,6 +6,7 @@ import local.app.application.command.AccountRepository
 import local.app.application.query.AccountEventsRepository
 import local.app.domain.model.*
 import local.app.pkg.getRequestIDFromContext
+import local.app.pkg.stringToFastMoney
 import org.javamoney.moneta.FastMoney
 import org.springframework.stereotype.Repository
 import java.util.UUID
@@ -95,21 +96,21 @@ class AccountRepositoryImpl(
                         AccountSummaryEvent(
                             account.id,
                             data.owner,
-                            FastMoney.of(data.balance.toDouble(), currency)
+                            stringToFastMoney(data.balance)
                         )
                     }
                     AccountEventTypes.ACCOUNT_CREDITED.name -> {
                         val data=gson.fromJson(it.data, AccountCreditedEventData::class.java)
                         AccountCreditEvent(
                             account.id,
-                            FastMoney.of(data.amount.toDouble(), currency)
+                            stringToFastMoney(data.amount)
                         )
                     }
                     AccountEventTypes.ACCOUNT_DEBITED.name -> {
                         val data=gson.fromJson(it.data, AccountDebitedEventData::class.java)
                         AccountDebitEvent(
                             account.id,
-                            FastMoney.of(data.amount.toDouble(), currency)
+                            stringToFastMoney(data.amount)
                         )
                     }
                     else -> null

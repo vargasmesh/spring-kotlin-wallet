@@ -7,7 +7,7 @@ import local.app.application.command.AccountCommands
 import local.app.application.command.DebitError
 import local.app.application.query.AccountQueries
 import local.app.domain.model.*
-import org.javamoney.moneta.FastMoney
+import local.app.pkg.stringToFastMoney
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
@@ -51,7 +51,7 @@ class AccountResolver(
     fun debitAccount(@Argument accountID: String, @Argument amount: String): Account {
         val account = accountQueries.getAccount(accountID)
 
-        val error = accountCommands.debitAccount(DebitAccountEvent(account, FastMoney.of(amount.toDouble(), currency) ))
+        val error = accountCommands.debitAccount(DebitAccountEvent(account, stringToFastMoney(amount) ))
         return when(error) {
             is DebitError.InsufficientFunds -> throw InsufficientFunds()
             else -> accountQueries.getAccount(accountID)
@@ -68,7 +68,7 @@ class AccountResolver(
         accountCommands.creditAccount(
             CreditAccountEvent(
                 accountID,
-                FastMoney.of(amount.toDouble(), currency) ,
+                stringToFastMoney(amount) ,
             )
         )
 
