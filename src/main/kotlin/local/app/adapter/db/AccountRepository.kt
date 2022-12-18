@@ -3,9 +3,8 @@ package local.app.adapter.db
 import com.google.gson.Gson
 import jakarta.persistence.*
 import local.app.application.command.AccountRepository
-import local.app.domain.model.AccountEventTypes
-import local.app.domain.model.AccountID
-import local.app.domain.model.CreateAccountEvent
+import local.app.domain.model.*
+import local.app.pkg.getRequestIDFromContext
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
@@ -20,12 +19,14 @@ class AccountRepositoryImpl(
 ): AccountRepository  {
 
     override fun createAccount(event: CreateAccountEvent): AccountID {
+        val requestID = getRequestIDFromContext()
+
         val gson = Gson()
         val accountID = UUID.randomUUID().toString()
         val accountCreatedEvent = Event(
             type = AccountEventTypes.ACCOUNT_CREATED.name,
             entity_id = accountID,
-            data = gson.toJson(AccountCreatedEvent(event.requestID, event.owner)),
+            data = gson.toJson(AccountCreatedEvent(requestID, event.owner)),
         )
 
         val summaryEvent = Event(
