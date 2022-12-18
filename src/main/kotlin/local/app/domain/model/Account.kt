@@ -13,6 +13,8 @@ data class Account(val id: AccountID, val balance: FastMoney = FastMoney.zero(cu
 sealed class AccountEvent
 
 data class AccountSummaryEvent(val accountID: AccountID, val owner: String, val balance: FastMoney): AccountEvent()
+data class AccountCreditEvent(val accountID: AccountID, val amount: FastMoney): AccountEvent()
+
 
 data class CreateAccountEvent(val owner: String)
 
